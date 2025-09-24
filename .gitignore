@@ -1,0 +1,13 @@
+# Visual Studio 관련
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# 빌드 출력
+[Bb]in/
+[Oo]bj/
+Debug/
+Release/
+x64/
