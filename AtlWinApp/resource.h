@@ -10,13 +10,10 @@
 #define IDI_SMALL                       108
 #define IDC_ACCEL                       109
 #define IDR_MAINFRAME                   128
-#define IDR_MENU1                       129
-
-// 메뉴 항목 ID 정의
-#define IDM_FILE_EXIT                   131
-#define IDM_FILE_OPEN					132
-
-// 고정값
+#define IDR_MENU_FILE                   129
+#define IDM_FILE_CLOSE                  131
+#define IDM_FILE_OPEN                   132
+#define ID_32775                        32775
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -25,7 +22,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        130
-#define _APS_NEXT_COMMAND_VALUE         32775
+#define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

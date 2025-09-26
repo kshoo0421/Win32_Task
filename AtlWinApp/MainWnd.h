@@ -18,11 +18,6 @@ extern "C" {
 }
 #include <setjmp.h>
 
-
-// 변경 종료
-
-
-
 class CMainWnd  : public CWindowImpl<CMainWnd, CWindow>
 {
 public:
@@ -34,17 +29,18 @@ public:
 public :
 	BEGIN_MSG_MAP(CMainWnd)
 		MESSAGE_HANDLER(WM_PAINT, OnPaint)
-		COMMAND_ID_HANDLER(IDM_FILE_OPEN, OnFileOpen) // 요구사항 2)
-		COMMAND_ID_HANDLER(IDM_FILE_EXIT, OnFileExit)
+		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)			// 창 닫기
+		COMMAND_ID_HANDLER(IDM_FILE_OPEN, OnFileOpen)	// 요구사항 2) 파일 열기
+		COMMAND_ID_HANDLER(IDM_FILE_CLOSE, OnFileClose)	// 파일 닫기
 	END_MSG_MAP()
 
 
 private:
-	LRESULT		OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) noexcept;
+	LRESULT	OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) noexcept;
 	
 	// 메뉴 핸들러
 	LRESULT OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-	LRESULT OnFileExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnFileClose(WORD, WORD, HWND, BOOL&);
 
 	LRESULT OnPaint(UINT, WPARAM, LPARAM, BOOL&);
 
