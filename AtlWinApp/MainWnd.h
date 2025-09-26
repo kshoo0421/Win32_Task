@@ -47,5 +47,6 @@ private:
 	// JPEG
 	HBITMAP m_hBmp = nullptr;
 	void LoadAndDisplayJpeg(LPCWSTR filename);
+	void LoadAndDisplayPng(LPCWSTR filename);
 };
 

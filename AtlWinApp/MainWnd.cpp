@@ -2,6 +2,8 @@
 #include <commdlg.h> // GetOpenFileName, OPENFILENAME
 #include "MainWnd.h"
 #include "resource.h"
+#include <png.h>
+#include <zlib.h>
 
 #define	APP_NAME				L"AtlWinApp"
 #define APP_CLASS_NAME			L"AtlWinAppClass"
@@ -59,31 +61,37 @@ BOOL CMainWnd::PreTranslateMessage(MSG* /*pMsg*/) noexcept
 // 파일 → 열기
 LRESULT CMainWnd::OnFileOpen(WORD, WORD, HWND, BOOL&)
 {
-	// 1) 파일 경로를 저장할 버퍼 준비
 	WCHAR szFile[MAX_PATH] = { 0 };
-
-	// 2) 파일 열기 다이얼로그 구조체 초기화
 	OPENFILENAME ofn;
 	ZeroMemory(&ofn, sizeof(ofn));
 
-	// 3) OPENFILENAME 구조체 채우기
-	ofn.lStructSize = sizeof(ofn);     // 구조체 크기
-	ofn.hwndOwner = m_hWnd;          // 다이얼로그 부모 윈도우 핸들
-	ofn.lpstrFilter = L"JPEG Files (*.jpg;*.jpeg)\0*.jpg;*.jpeg\0All Files (*.*)\0*.*\0\0";
-	// 확장자 필터 (JPEG 파일 우선 표시, 모든 파일도 가능)
-	ofn.lpstrFile = szFile;          // 선택된 파일 경로 저장 버퍼
-	ofn.nMaxFile = MAX_PATH;        // 버퍼 크기
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = m_hWnd;
+	ofn.lpstrFilter =
+		L"Image Files (*.jpg;*.jpeg;*.png)\0*.jpg;*.jpeg;*.png\0All Files (*.*)\0*.*\0\0";
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = MAX_PATH;
 	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
-	// 존재하는 파일만 선택 가능, 유효한 경로만 허용
 
-	// 4) 파일 열기 다이얼로그 표시
 	if (GetOpenFileName(&ofn)) {
-		// 사용자가 정상적으로 파일을 선택하면, JPEG 로드 함수 호출
-		LoadAndDisplayJpeg(szFile);
+		// 확장자 판별 (WCHAR* 기반)
+		WCHAR* ext = wcsrchr(szFile, L'.');
+		if (ext) {
+			ext++; // '.' 건너뜀
+			if (_wcsicmp(ext, L"jpg") == 0 || _wcsicmp(ext, L"jpeg") == 0) {
+				LoadAndDisplayJpeg(szFile);
+			}
+			else if (_wcsicmp(ext, L"png") == 0) {
+				LoadAndDisplayPng(szFile);
+			}
+			else {
+				MessageBox(L"지원하지 않는 이미지 형식입니다.", L"에러", MB_ICONERROR);
+			}
+		}
 	}
-
 	return 0;
 }
+
 
 // 파일 닫기
 LRESULT CMainWnd::OnFileClose(WORD, WORD, HWND, BOOL&)
@@ -246,4 +254,90 @@ void CMainWnd::LoadAndDisplayJpeg(LPCWSTR filename)
 	SelectObject(memDC, hOld);
 	DeleteDC(memDC);
 	ReleaseDC(hdc);
+}
+
+
+// PNG 로드 & 표시
+void CMainWnd::LoadAndDisplayPng(LPCWSTR filename)
+{
+	//// 이전 비트맵 해제
+	//if (m_hBmp) {
+	//	DeleteObject(m_hBmp);
+	//	m_hBmp = nullptr;
+	//}
+
+	//// 파일 열기
+	//FILE* fp = nullptr;
+	//if (_wfopen_s(&fp, filename, L"rb") != 0 || !fp) {
+	//	return;
+	//}
+
+	//// libpng 기본 구조체
+	//png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	//if (!png_ptr) { fclose(fp); return; }
+
+	//png_infop info_ptr = png_create_info_struct(png_ptr);
+	//if (!info_ptr) { png_destroy_read_struct(&png_ptr, NULL, NULL); fclose(fp); return; }
+
+	//if (setjmp(png_jmpbuf(png_ptr))) {
+	//	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+	//	fclose(fp);
+	//	return;
+	//}
+
+	//png_init_io(png_ptr, fp);
+	//png_read_info(png_ptr, info_ptr);
+
+	//int width = png_get_image_width(png_ptr, info_ptr);
+	//int height = png_get_image_height(png_ptr, info_ptr);
+	//int rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+
+	//// 픽셀 데이터 버퍼
+	//unsigned char* image_data = new unsigned char[rowbytes * height];
+	//png_bytep* row_pointers = new png_bytep[height];
+	//for (int y = 0; y < height; y++)
+	//	row_pointers[y] = image_data + y * rowbytes;
+
+	//// PNG 읽기
+	//png_read_image(png_ptr, row_pointers);
+
+	//// 정리
+	//delete[] row_pointers;
+	//fclose(fp);
+	//png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+
+	//// DIBSection 생성 (32비트 BGRA)
+	//BITMAPINFO bmi = { 0 };
+	//bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	//bmi.bmiHeader.biWidth = width;
+	//bmi.bmiHeader.biHeight = -height;
+	//bmi.bmiHeader.biPlanes = 1;
+	//bmi.bmiHeader.biBitCount = 32;
+	//bmi.bmiHeader.biCompression = BI_RGB;
+
+	//void* pBits = nullptr;
+	//m_hBmp = CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, &pBits, NULL, 0);
+	//if (!m_hBmp || !pBits) {
+	//	delete[] image_data;
+	//	return;
+	//}
+
+	//// 복사 (RGBA → BGRA)
+	//unsigned char* dst = (unsigned char*)pBits;
+	//for (int y = 0; y < height; y++) {
+	//	png_bytep src = image_data + y * rowbytes;
+	//	for (int x = 0; x < width; x++) {
+	//		dst[0] = src[2]; // B
+	//		dst[1] = src[1]; // G
+	//		dst[2] = src[0]; // R
+	//		dst[3] = (rowbytes / width == 4) ? src[3] : 0xFF; // A (없으면 255)
+	//		dst += 4;
+	//		src += (rowbytes / width);
+	//	}
+	//}
+
+	//delete[] image_data;
+
+	//// 화면 갱신
+	//Invalidate(FALSE);
 }
