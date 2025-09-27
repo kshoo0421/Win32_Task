@@ -12,11 +12,7 @@ $(SolutionDir)..\zlib-1.3\build\$(Configuration)
 
 링커 - 입력 - 추가 종속성
 [Debug]
-jpeg-static.lib
-turbojpeg-static.lib
-Comdlg32.lib
-libpng16_staticd.lib
-zd.lib
+	
 
 [Release]
 jpeg-static.lib

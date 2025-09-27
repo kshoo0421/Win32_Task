@@ -4,6 +4,7 @@
 #include "resource.h"
 #include <png.h>
 #include <zlib.h>
+#include <vector>
 
 #define	APP_NAME				L"AtlWinApp"
 #define APP_CLASS_NAME			L"AtlWinAppClass"
@@ -260,84 +261,103 @@ void CMainWnd::LoadAndDisplayJpeg(LPCWSTR filename)
 // PNG 로드 & 표시
 void CMainWnd::LoadAndDisplayPng(LPCWSTR filename)
 {
-	//// 이전 비트맵 해제
-	//if (m_hBmp) {
-	//	DeleteObject(m_hBmp);
-	//	m_hBmp = nullptr;
-	//}
+    // 1) 기존 비트맵 해제
+    if (m_hBmp) {
+        DeleteObject(m_hBmp);
+        m_hBmp = nullptr;
+    }
 
-	//// 파일 열기
-	//FILE* fp = nullptr;
-	//if (_wfopen_s(&fp, filename, L"rb") != 0 || !fp) {
-	//	return;
-	//}
+    // 2) 파일 열기
+    FILE* fp = nullptr;
+    if (_wfopen_s(&fp, filename, L"rb") != 0 || !fp) {
+        MessageBox(L"PNG 파일 열기 실패", L"에러", MB_ICONERROR);
+        return;
+    }
 
-	//// libpng 기본 구조체
-	//png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	//if (!png_ptr) { fclose(fp); return; }
+    // 3) libpng 구조체 생성
+    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    if (!png_ptr) { fclose(fp); return; }
 
-	//png_infop info_ptr = png_create_info_struct(png_ptr);
-	//if (!info_ptr) { png_destroy_read_struct(&png_ptr, NULL, NULL); fclose(fp); return; }
+    png_infop info_ptr = png_create_info_struct(png_ptr);
+    if (!info_ptr) { png_destroy_read_struct(&png_ptr, NULL, NULL); fclose(fp); return; }
 
-	//if (setjmp(png_jmpbuf(png_ptr))) {
-	//	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-	//	fclose(fp);
-	//	return;
-	//}
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+        fclose(fp);
+        return;
+    }
 
-	//png_init_io(png_ptr, fp);
-	//png_read_info(png_ptr, info_ptr);
+    // 4) PNG 파일 읽기 준비
+    png_init_io(png_ptr, fp);
+    png_read_info(png_ptr, info_ptr);
 
-	//int width = png_get_image_width(png_ptr, info_ptr);
-	//int height = png_get_image_height(png_ptr, info_ptr);
-	//int rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+    int width  = png_get_image_width(png_ptr, info_ptr);
+    int height = png_get_image_height(png_ptr, info_ptr);
+    png_byte color_type = png_get_color_type(png_ptr, info_ptr);
+    png_byte bit_depth  = png_get_bit_depth(png_ptr, info_ptr);
 
-	//// 픽셀 데이터 버퍼
-	//unsigned char* image_data = new unsigned char[rowbytes * height];
-	//png_bytep* row_pointers = new png_bytep[height];
-	//for (int y = 0; y < height; y++)
-	//	row_pointers[y] = image_data + y * rowbytes;
+    // 5) 색상 변환
+    if (bit_depth == 16) png_set_strip_16(png_ptr);
+    if (color_type == PNG_COLOR_TYPE_PALETTE) png_set_palette_to_rgb(png_ptr);
+    if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) png_set_expand_gray_1_2_4_to_8(png_ptr);
+    if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) png_set_tRNS_to_alpha(png_ptr);
 
-	//// PNG 읽기
-	//png_read_image(png_ptr, row_pointers);
+    if (color_type == PNG_COLOR_TYPE_RGB ||
+        color_type == PNG_COLOR_TYPE_GRAY ||
+        color_type == PNG_COLOR_TYPE_PALETTE)
+        png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 
-	//// 정리
-	//delete[] row_pointers;
-	//fclose(fp);
-	//png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+    if (color_type == PNG_COLOR_TYPE_GRAY ||
+        color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
+        png_set_gray_to_rgb(png_ptr);
 
-	//// DIBSection 생성 (32비트 BGRA)
-	//BITMAPINFO bmi = { 0 };
-	//bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	//bmi.bmiHeader.biWidth = width;
-	//bmi.bmiHeader.biHeight = -height;
-	//bmi.bmiHeader.biPlanes = 1;
-	//bmi.bmiHeader.biBitCount = 32;
-	//bmi.bmiHeader.biCompression = BI_RGB;
+    png_read_update_info(png_ptr, info_ptr);
 
-	//void* pBits = nullptr;
-	//m_hBmp = CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, &pBits, NULL, 0);
-	//if (!m_hBmp || !pBits) {
-	//	delete[] image_data;
-	//	return;
-	//}
+    // 6) 버퍼 준비 (vector 사용)
+    int rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+    std::vector<unsigned char> image_data(rowbytes * height);
+    std::vector<png_bytep> row_pointers(height);
 
-	//// 복사 (RGBA → BGRA)
-	//unsigned char* dst = (unsigned char*)pBits;
-	//for (int y = 0; y < height; y++) {
-	//	png_bytep src = image_data + y * rowbytes;
-	//	for (int x = 0; x < width; x++) {
-	//		dst[0] = src[2]; // B
-	//		dst[1] = src[1]; // G
-	//		dst[2] = src[0]; // R
-	//		dst[3] = (rowbytes / width == 4) ? src[3] : 0xFF; // A (없으면 255)
-	//		dst += 4;
-	//		src += (rowbytes / width);
-	//	}
-	//}
+    for (int y = 0; y < height; y++) {
+        row_pointers[y] = image_data.data() + y * rowbytes;
+    }
 
-	//delete[] image_data;
+    // 7) PNG 이미지 읽기
+    png_read_image(png_ptr, row_pointers.data());
 
-	//// 화면 갱신
-	//Invalidate(FALSE);
+    // 8) 정리
+    fclose(fp);
+    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+
+    // 9) DIBSection 생성
+    BITMAPINFO bmi = { 0 };
+    bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth       = width;
+    bmi.bmiHeader.biHeight      = -height; // top-down
+    bmi.bmiHeader.biPlanes      = 1;
+    bmi.bmiHeader.biBitCount    = 32;
+    bmi.bmiHeader.biCompression = BI_RGB;
+
+    void* pBits = nullptr;
+    m_hBmp = CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, &pBits, NULL, 0);
+    if (!m_hBmp || !pBits) {
+        return;
+    }
+
+    // 10) RGBA → BGRA 변환 복사
+    unsigned char* dst = (unsigned char*)pBits;
+    for (int y = 0; y < height; y++) {
+        png_bytep src = row_pointers[y];
+        for (int x = 0; x < width; x++) {
+            dst[0] = src[2]; // B
+            dst[1] = src[1]; // G
+            dst[2] = src[0]; // R
+            dst[3] = src[3]; // A
+            dst += 4;
+            src += 4;
+        }
+    }
+
+    // 11) 화면 갱신
+    Invalidate(FALSE);
 }
