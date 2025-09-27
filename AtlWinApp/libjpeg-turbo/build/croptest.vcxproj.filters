@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\shmd02\Desktop\Coding\Win32_Task\AtlWinApp\libjpeg-turbo\build\CMakeFiles\2b533f3d3f9cdc1a3c1a6a750aec87e4\croptest.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\shmd02\Desktop\Coding\Win32_Task\AtlWinApp\libjpeg-turbo\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\shmd02\Desktop\Coding\Win32_Task\AtlWinApp\libjpeg-turbo\build\CMakeFiles\croptest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{EC9369E4-D665-3776-84AB-E03081C0BB33}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

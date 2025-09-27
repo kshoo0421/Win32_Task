@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\shmd02\Desktop\Coding\Win32_Task\AtlWinApp\libjpeg-turbo\build\CMakeFiles\20f8aeb582e991eae64503223d2c157e\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{EC9369E4-D665-3776-84AB-E03081C0BB33}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

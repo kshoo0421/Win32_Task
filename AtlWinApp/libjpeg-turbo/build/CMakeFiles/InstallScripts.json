@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/libjpeg-turbo/build/cmake_install.cmake",
+		"C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/libjpeg-turbo/build/simd/cmake_install.cmake",
+		"C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/libjpeg-turbo/build/src/md5/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
