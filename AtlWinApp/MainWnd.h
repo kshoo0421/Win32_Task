@@ -11,42 +11,52 @@
 
 
 #pragma once
-#include "resource.h" // local 우선 참조
+#include "resource.h"
 
 extern "C" {
 #include "jpeglib.h"
 }
 #include <setjmp.h>
+#include <vector>
 
-class CMainWnd  : public CWindowImpl<CMainWnd, CWindow>
+class CMainWnd : public CWindowImpl<CMainWnd, CWindow>
 {
 public:
-	CMainWnd() noexcept;
-	~CMainWnd() final;
-	BOOL		CreateMainWindow();
-	BOOL		PreTranslateMessage(MSG* pMsg) noexcept;
+    CMainWnd() noexcept;
+    ~CMainWnd() final;
+    BOOL    CreateMainWindow();
+    BOOL    PreTranslateMessage(MSG* pMsg) noexcept;
 
-public :
-	BEGIN_MSG_MAP(CMainWnd)
-		MESSAGE_HANDLER(WM_PAINT, OnPaint)
-		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)			// 창 닫기
-		COMMAND_ID_HANDLER(IDM_FILE_OPEN, OnFileOpen)	// 요구사항 2) 파일 열기
-		COMMAND_ID_HANDLER(IDM_FILE_CLOSE, OnFileClose)	// 파일 닫기
-	END_MSG_MAP()
-
+public:
+    BEGIN_MSG_MAP(CMainWnd)
+        MESSAGE_HANDLER(WM_PAINT, OnPaint)
+        MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
+        MESSAGE_HANDLER(WM_MOUSEWHEEL, OnMouseWheel) // 휠로 사진 이동
+        MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)      // 키보드로 사진 이동
+        MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBkgnd)    // 배경 제거
+        MESSAGE_HANDLER(WM_SIZE, OnSize)                // 사이즈 조정
+        COMMAND_ID_HANDLER(IDM_FILE_OPEN, OnFileOpen)
+        COMMAND_ID_HANDLER(IDM_FILE_CLOSE, OnFileClose)
+    END_MSG_MAP()
 
 private:
-	LRESULT	OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) noexcept;
-	
-	// 메뉴 핸들러
-	LRESULT OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-	LRESULT OnFileClose(WORD, WORD, HWND, BOOL&);
+    HBITMAP m_hBmp = nullptr;
+    std::vector<WCHAR*> m_imageFiles; // 이미지 파일 목록 (동적 문자열)
+    int m_currentIndex = -1;
 
-	LRESULT OnPaint(UINT, WPARAM, LPARAM, BOOL&);
+    LRESULT OnPaint(UINT, WPARAM, LPARAM, BOOL&);
+    LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) noexcept;
+    LRESULT OnMouseWheel(UINT, WPARAM, LPARAM, BOOL&);
+    LRESULT OnKeyDown(UINT, WPARAM, LPARAM, BOOL&);
+    LRESULT OnEraseBkgnd(UINT, WPARAM wParam, LPARAM, BOOL&);
+    LRESULT OnSize(UINT, WPARAM, LPARAM, BOOL&);
 
-	// JPEG
-	HBITMAP m_hBmp = nullptr;
-	void LoadAndDisplayJpeg(LPCWSTR filename);
-	void LoadAndDisplayPng(LPCWSTR filename);
+    LRESULT OnFileOpen(WORD, WORD, HWND, BOOL&);
+    LRESULT OnFileClose(WORD, WORD, HWND, BOOL&);
+
+    void LoadAndDisplayJpeg(LPCWSTR filename);
+    void LoadAndDisplayPng(LPCWSTR filename);
+    void LoadCurrentImage();
+
+    void ClearImageList(); // 메모리 해제 함수
 };
-

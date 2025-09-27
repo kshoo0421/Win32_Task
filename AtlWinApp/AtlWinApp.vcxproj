@@ -112,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <EnablePREfast>true</EnablePREfast>
-      <AdditionalIncludeDirectories>$(SolutionDir)libjpeg-turbo;$(SolutionDir)libjpeg-turbo\build;$(SolutionDir)libjpeg-turbo\src;$(SolutionDir)lpng1650;$(SolutionDir)lpng1650\build;$(SolutionDir)zlib-1.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libjpeg-turbo;$(SolutionDir)libjpeg-turbo\build;$(SolutionDir)libjpeg-turbo\src;$(SolutionDir)lpng1650;$(SolutionDir)lpng1650\build;$(SolutionDir)zlib-1.3;$(SolutionDir)zlib-1.3\build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <ControlFlowGuard>false</ControlFlowGuard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -122,6 +122,7 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>jpeg-static.lib;turbojpeg-static.lib;Comdlg32.lib;libpng16_staticd.lib;zsd.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)libjpeg-turbo\build\$(Configuration);$(SolutionDir)lpng1650\build\$(Configuration);$(SolutionDir)zlib-1.3\build\$(Configuration)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>MSVCRT.lib;MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -133,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <EnablePREfast>true</EnablePREfast>
-      <AdditionalIncludeDirectories>$(SolutionDir)libjpeg-turbo;$(SolutionDir)libjpeg-turbo\build;$(SolutionDir)libjpeg-turbo\src;$(SolutionDir)lpng1650;$(SolutionDir)lpng1650\build;$(SolutionDir)zlib-1.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libjpeg-turbo;$(SolutionDir)libjpeg-turbo\build;$(SolutionDir)libjpeg-turbo\src;$(SolutionDir)lpng1650;$(SolutionDir)lpng1650\build;$(SolutionDir)zlib-1.3;$(SolutionDir)zlib-1.3\build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <ControlFlowGuard>false</ControlFlowGuard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -143,6 +144,7 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>jpeg-static.lib;turbojpeg-static.lib;Comdlg32.lib;libpng16_staticd.lib;zsd.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)libjpeg-turbo\build\$(Configuration);$(SolutionDir)lpng1650\build\$(Configuration);$(SolutionDir)zlib-1.3\build\$(Configuration)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>MSVCRT.lib;MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -156,7 +158,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <EnablePREfast>true</EnablePREfast>
-      <AdditionalIncludeDirectories>$(SolutionDir)libjpeg-turbo;$(SolutionDir)libjpeg-turbo\build;$(SolutionDir)libjpeg-turbo\src;$(SolutionDir)lpng1650;$(SolutionDir)lpng1650\build;$(SolutionDir)zlib-1.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libjpeg-turbo;$(SolutionDir)libjpeg-turbo\build;$(SolutionDir)libjpeg-turbo\src;$(SolutionDir)lpng1650;$(SolutionDir)lpng1650\build;$(SolutionDir)zlib-1.3;$(SolutionDir)zlib-1.3\build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -166,6 +168,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>jpeg-static.lib;turbojpeg-static.lib;Comdlg32.lib;libpng16_static.lib;zs.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)libjpeg-turbo\build\$(Configuration);$(SolutionDir)lpng1650\build\$(Configuration);$(SolutionDir)zlib-1.3\build\$(Configuration)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>MSVCRT.lib;MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -179,7 +182,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <EnablePREfast>true</EnablePREfast>
-      <AdditionalIncludeDirectories>$(SolutionDir)libjpeg-turbo;$(SolutionDir)libjpeg-turbo\build;$(SolutionDir)libjpeg-turbo\src;$(SolutionDir)lpng1650;$(SolutionDir)lpng1650\build;$(SolutionDir)zlib-1.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libjpeg-turbo;$(SolutionDir)libjpeg-turbo\build;$(SolutionDir)libjpeg-turbo\src;$(SolutionDir)lpng1650;$(SolutionDir)lpng1650\build;$(SolutionDir)zlib-1.3;$(SolutionDir)zlib-1.3\build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -189,6 +192,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>jpeg-static.lib;turbojpeg-static.lib;Comdlg32.lib;libpng16_static.lib;zs.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)libjpeg-turbo\build\$(Configuration);$(SolutionDir)lpng1650\build\$(Configuration);$(SolutionDir)zlib-1.3\build\$(Configuration)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>MSVCRT.lib;MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
