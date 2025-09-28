@@ -17,7 +17,7 @@ CMainWnd::CMainWnd(void) noexcept
 
 CMainWnd::~CMainWnd(void)
 {
-	// jpeg 담당
+	// jpeg/png 담당
 	if (m_hBmp)
 	{
 		DeleteObject(m_hBmp);

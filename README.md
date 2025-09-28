@@ -1,6 +1,75 @@
 # Win32_Task
 Win32 기반 이미지 뷰어 +a
 
+
+## AtlWinApp 라이브러리 빌드 옵션
+### [01] libjpeg-turbo
+``` powershell
+mkdir build
+cd build
+
+# Release
+cmake .. -G "Visual Studio 17 2022" -A x64 `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded"
+
+cmake --build . --config Release
+
+# Debug
+cmake .. -G "Visual Studio 17 2022" -A x64 `
+  -DCMAKE_BUILD_TYPE=Debug `
+  -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreadedDebug"
+
+cmake --build . --config Debug
+```
+
+### [02] zlib 1.3
+``` powershell
+# 새 build 디렉터리 생성
+mkdir build
+cd build
+
+# Release
+cmake .. -G "Visual Studio 17 2022" -A x64 `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded"
+
+cmake --build . --config Release
+
+# Debug
+cmake .. -G "Visual Studio 17 2022" -A x64 `
+  -DCMAKE_BUILD_TYPE=Debug `
+  -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreadedDebug"
+
+cmake --build . --config Debug
+```
+
+### [03] libpng 1.6.x
+``` powershell
+mkdir build
+cd build
+
+# Release
+cmake .. -G "Visual Studio 17 2022" -A x64 `
+  -DPNG_SHARED=OFF -DPNG_STATIC=ON `
+  -DZLIB_INCLUDE_DIR="C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/zlib-1.3" `
+  -DZLIB_LIBRARY="C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/zlib-1.3/build/Release/zs.lib" `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded"
+
+cmake --build . --config Release
+
+# Debug
+cmake .. -G "Visual Studio 17 2022" -A x64 `
+  -DPNG_SHARED=OFF -DPNG_STATIC=ON `
+  -DZLIB_INCLUDE_DIR="C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/zlib-1.3" `
+  -DZLIB_LIBRARY="C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/zlib-1.3/build/Debug/zsd.lib" `
+  -DCMAKE_BUILD_TYPE=Debug `
+  -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreadedDebug"
+
+cmake --build . --config Debug
+```
+
 ## 25.09.23-24
 ### [01] 라이브러리 빌드 및 프로젝트 연결
 1. libjpeg-turbo 라이브러리 빌드 (w/Visual Studio 2022)
@@ -24,23 +93,3 @@ Win32 기반 이미지 뷰어 +a
 - JPEG 폴더가 깃허브에 안올라가는 오류 수정
 ### [02] PNG 관련 기능 구현
 라이브러리 - CRT 설정에 맞게 빌드
-# Debug 빌드 (정적 CRT /MTd)
-cmake .. -G "Visual Studio 17 2022" -A x64 `
-  -DCMAKE_BUILD_TYPE=Debug `
-  -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreadedDebug" `
-  -DPNG_SHARED=OFF -DPNG_STATIC=ON `
-  -DZLIB_INCLUDE_DIR="C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/zlib-1.3" `
-  -DZLIB_LIBRARY="C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/zlib-1.3/build/Debug/zsd.lib"
-
-cmake --build . --config Debug
-
-
-# Release 빌드 (정적 CRT /MT)
-cmake .. -G "Visual Studio 17 2022" -A x64 `
-  -DCMAKE_BUILD_TYPE=Release `
-  -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded" `
-  -DPNG_SHARED=OFF -DPNG_STATIC=ON `
-  -DZLIB_INCLUDE_DIR="C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/zlib-1.3" `
-  -DZLIB_LIBRARY="C:/Users/shmd02/Desktop/Coding/Win32_Task/AtlWinApp/zlib-1.3/build/Release/zs.lib"
-
-cmake --build . --config Release
