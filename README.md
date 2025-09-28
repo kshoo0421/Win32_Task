@@ -1,6 +1,19 @@
 # Win32_Task
-Win32 기반 이미지 뷰어 +a
+## Win32 기반 이미지 뷰어 + String Class 구현
 
+**폴더**
+
+- LearnWin32 : VS 공식 문서 기반 Win32 공부용 프로젝트
+- AtlWin32 : 이미지 뷰어 프로젝트
+- StringClass : String 클래스 구현 및 유닛 테스트 진행
+
+**기타**
+- AI 검색을 활용하되, 코드 작성 및 디버깅은 직접 진행
+- 함수의 응용 방법 등은 추가로 공부 중
+
+---
+
+<br><br>
 
 ## AtlWinApp 라이브러리 빌드 옵션
 ### [01] libjpeg-turbo
@@ -70,6 +83,11 @@ cmake .. -G "Visual Studio 17 2022" -A x64 `
 cmake --build . --config Debug
 ```
 
+---
+
+<br><br>
+
+# 일지
 ## 25.09.23-24
 ### [01] 라이브러리 빌드 및 프로젝트 연결
 1. libjpeg-turbo 라이브러리 빌드 (w/Visual Studio 2022)
@@ -92,4 +110,13 @@ cmake --build . --config Debug
 ### [01] 라이브러리 관련 GIT 조정
 - JPEG 폴더가 깃허브에 안올라가는 오류 수정
 ### [02] PNG 관련 기능 구현
-라이브러리 - CRT 설정에 맞게 빌드
+- 라이브러리 - CRT 설정에 맞게 빌드
+
+## 25.09.28
+### [01] String Class 구현
+- 일반 프로그램 + 유닛테스트 구현
+- 일반 프로그램 : 메모리누수 체크 => _CrtDumpMemoryLeaks(); 함수 활용
+- 유닛 테스트 : 클래스 내 함수 동작 확인
+
+### [02] README 조정
+- 프로젝트 총 정리
